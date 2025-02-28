@@ -116,67 +116,75 @@ export default function App() {
   }
 
   const run = useCallback(() => {
-    let fullCode = ''
-    let params = {}
+    try {
+      let fullCode = ''
+      let params = {}
 
-    Object.keys(nodesCode.current).forEach(id => {
-      const code = nodesCode.current[id].code
-      fullCode += code + '\n' + '\n'
-      if (nodesCode.current[id].params.length == 0) params[id] = []
-    })
+      Object.keys(nodesCode.current).forEach(id => {
+        const code = nodesCode.current[id].code
+        fullCode += code + '\n' + '\n'
+        if (nodesCode.current[id].params.length == 0) params[id] = []
+      })
 
-    edges.forEach(edge => {
-      const targetId = parseInt(edge.target)
-      const sourceId = parseInt(edge.source)
+      edges.forEach(edge => {
+        const targetId = parseInt(edge.target)
+        const sourceId = parseInt(edge.source)
 
-      const source = nodesCode.current[sourceId]
-      const target = nodesCode.current[targetId]
+        const source = nodesCode.current[sourceId]
+        const target = nodesCode.current[targetId]
 
-      const sourceReturnHandle = parseInt(
-        edge.sourceHandle.replace('return-handle-', '')
-      )
+        const sourceReturnHandle = parseInt(
+          edge.sourceHandle.replace('return-handle-', '')
+        )
 
-      const paramExpectedName = `${source.functionName}_${sourceReturnHandle}`
-      if (params[targetId])
-        params[targetId] = [...params[targetId], paramExpectedName]
-      else params[targetId] = [paramExpectedName]
-    })
+        const paramExpectedName = `${source.functionName}_${sourceReturnHandle}`
+        if (params[targetId])
+          params[targetId] = [...params[targetId], paramExpectedName]
+        else params[targetId] = [paramExpectedName]
+      })
 
-    fullCode += '\n'
+      const sorted = topologicalSort(nodes, edges)
 
-    const sorted = topologicalSort(nodes, edges)
+      sorted.forEach(id => {
+        const node = nodesCode.current[id]
 
-    sorted.forEach(id => {
-      const node = nodesCode.current[id]
-
-      let line = '\n '
-      if (node.returns.length >= 1) {
-        line += 'const '
-        if (node.returns.length > 1) {
-          line += `[`
-          node.returns.forEach((_, index) => {
-            line += `${node.functionName}_${index}, `
-          })
-          line += `] = `
-        } else line += `${node.functionName}_0 ` + ' = '
-      }
-      line += node.functionName + '('
-
-      if (params[id].length > 0) {
-        line += `${params[id][0]}`
-
-        for (let i = 1; i < params[id].length; i++) {
-          line += `, ${params[id][i]}`
+        let line = '\n'
+        if (node.returns.length >= 1) {
+          line += 'const '
+          if (node.returns.length > 1) {
+            line += `[`
+            node.returns.forEach((_, index) => {
+              line += `${node.functionName}_${index}, `
+            })
+            line += `] = `
+          } else line += `${node.functionName}_0 ` + ' = '
         }
-      }
+        line += node.functionName + '('
 
-      line += ')'
-      fullCode += line
-    })
+        if (params[id] === undefined) {
+          throw new Error(
+            `The function "${node.functionName}" has unfilled parameters`
+          )
+        }
 
-    console.log('fullCode:\n', fullCode)
-    setCode(fullCode)
-    setOpenCode(true)
+        if (params[id].length > 0) {
+          line += `${params[id][0]}`
+
+          for (let i = 1; i < params[id].length; i++) {
+            line += `, ${params[id][i]}`
+          }
+        }
+
+        line += ')'
+        fullCode += line
+      })
+
+      console.log('fullCode:\n', fullCode)
+      setCode(fullCode)
+      setOpenCode(true)
+    } catch (error) {
+      toast(error.message)
+    }
   }, [edges])
 
   const copyCode = () => {
