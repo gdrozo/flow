@@ -46,8 +46,8 @@ const Editor = ({ className, code, setCodeHook, readOnly = false }) => {
           outline: '#282828 1px solid',
         },
         '.cm-editor': {
-          borderRadius: '0.5rem',
           overflow: 'hidden',
+          borderRadius: 'calc(var(--radius) - 2px)',
         },
       },
       { dark: true }
@@ -69,7 +69,8 @@ const Editor = ({ className, code, setCodeHook, readOnly = false }) => {
       parent: element.current,
     })
 
-    if (code === '') setCode(Array.from({ length: 1 }).join('\n'))
+    if (code === '' || code === undefined)
+      setCode(Array.from({ length: 1 }).join('\n'))
   }, [element])
 
   const setCode = code => {
@@ -93,7 +94,7 @@ const Editor = ({ className, code, setCodeHook, readOnly = false }) => {
 
   return (
     <div className={className}>
-      <div className='rounded-md overflow-hidden' ref={element}></div>
+      <div className='rounded-md overflow-hiddens' ref={element}></div>
     </div>
   )
 }

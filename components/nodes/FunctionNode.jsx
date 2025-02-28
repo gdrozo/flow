@@ -81,7 +81,6 @@ function FunctionNode({ id, data }) {
         className='absolute top-0 right-0 m-2 rounded-full p-2 hover:bg-transparent hover:text-white text-white/50 transition-colors h-auto w-auto'
         variant='ghost'
         onClick={() => {
-          debugger
           data.deleteNode()
         }}
       >
