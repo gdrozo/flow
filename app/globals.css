@@ -131,3 +131,11 @@
   border-top-left-radius: calc(var(--radius) - 2px);
   border-bottom-left-radius: calc(var(--radius) - 2px);
 }
+
+.ͼb {
+  color: #3f9cd6;
+}
+
+.ͼg {
+  color: #dcdc8b;
+}
