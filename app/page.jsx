@@ -84,7 +84,6 @@ export default function App() {
   const [nodes, setNodes] = useNodesState(initialNodes)
   const [edges, setEdges] = useEdgesState(initialEdges)
 
-  const codeListener = code => console.log('code listener', code)
   const nodeTypes = useMemo(() => ({ function: FunctionNode }))
 
   const onConnect = useCallback(
@@ -117,8 +116,6 @@ export default function App() {
   }
 
   const run = useCallback(() => {
-    console.log('run', nodesCode.current, edges, nodes)
-
     let fullCode = ''
     let params = {}
 
@@ -146,8 +143,6 @@ export default function App() {
     })
 
     fullCode += '\n'
-
-    console.log('fullCode:\n', fullCode)
 
     const sorted = topologicalSort(nodes, edges)
 
@@ -179,6 +174,7 @@ export default function App() {
       fullCode += line
     })
 
+    console.log('fullCode:\n', fullCode)
     setCode(fullCode)
     setOpenCode(true)
   }, [edges])

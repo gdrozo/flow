@@ -69,10 +69,13 @@ const Editor = ({ className, code, setCodeHook, readOnly = false }) => {
       parent: element.current,
     })
 
-    setCode(Array.from({ length: 1 }).join('\n'))
+    if (code === '') setCode(Array.from({ length: 1 }).join('\n'))
   }, [element])
 
   const setCode = code => {
+    if (code === undefined) return
+
+    console.log('setCode', code, editorView.current)
     if (editorView.current) {
       editorView.current.dispatch({
         changes: {
@@ -81,7 +84,7 @@ const Editor = ({ className, code, setCodeHook, readOnly = false }) => {
           insert: code,
         },
       })
-    }
+    } else setTimeout(() => setCode(code), 100)
   }
 
   const getCode = () => {
