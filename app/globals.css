@@ -126,3 +126,8 @@
 .cm-editor {
   border-radius: calc(var(--radius) - 2px);
 }
+
+.cm-gutters {
+  border-top-left-radius: calc(var(--radius) - 2px);
+  border-bottom-left-radius: calc(var(--radius) - 2px);
+}
