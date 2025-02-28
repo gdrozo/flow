@@ -51,7 +51,27 @@ import { Toaster } from '@/components/ui/sonner'
 import { topologicalSort } from '@/engine/sort'
 
 const initialEdges = [
-  //  { id: 'e1-2', source: '1', target: '2' }
+  {
+    id: '1-3',
+    source: '1',
+    target: '3',
+    targetHandle: 'param-handle-0',
+    sourceHandle: 'return-handle-0',
+  },
+  {
+    id: '2-3',
+    source: '2',
+    target: '3',
+    targetHandle: 'param-handle-1',
+    sourceHandle: 'return-handle-0',
+  },
+  {
+    id: '3-4',
+    source: '3',
+    target: '4',
+    targetHandle: 'param-handle-0',
+    sourceHandle: 'return-handle-0',
+  },
 ]
 
 export default function App() {
@@ -68,12 +88,46 @@ export default function App() {
     () => [
       {
         id: '1',
-        position: { x: 300, y: 200 },
+        position: { x: 100, y: 100 },
         type: 'function',
         data: {
           codeListener: (id, functionName, params, returns, code) =>
             (nodesCode.current[id] = { functionName, params, returns, code }),
           deleteNode: () => deleteNode('1'),
+          code: 'function a() {\n  return 1;\n}',
+        },
+      },
+      {
+        id: '2',
+        position: { x: 100, y: 350 },
+        type: 'function',
+        data: {
+          codeListener: (id, functionName, params, returns, code) =>
+            (nodesCode.current[id] = { functionName, params, returns, code }),
+          deleteNode: () => deleteNode('1'),
+          code: 'function b() {\n  return 3;\n}',
+        },
+      },
+      {
+        id: '3',
+        position: { x: 600, y: 250 },
+        type: 'function',
+        data: {
+          codeListener: (id, functionName, params, returns, code) =>
+            (nodesCode.current[id] = { functionName, params, returns, code }),
+          deleteNode: () => deleteNode('1'),
+          code: 'function sum(a, b) {\n  return a + b;\n}',
+        },
+      },
+      {
+        id: '4',
+        position: { x: 1100, y: 250 },
+        type: 'function',
+        data: {
+          codeListener: (id, functionName, params, returns, code) =>
+            (nodesCode.current[id] = { functionName, params, returns, code }),
+          deleteNode: () => deleteNode('1'),
+          code: 'function print(value) {\n console.log(value) \n}',
         },
       },
     ],

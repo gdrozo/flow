@@ -44,6 +44,10 @@ function FunctionNode({ id, data }) {
 
   const [code, setCode] = useValue('', onCodeChange)
 
+  useEffect(() => {
+    if (data.code) setCode(data.code)
+  }, [data])
+
   function onCodeChange(code) {
     let functionName, params, returns
 
@@ -113,6 +117,7 @@ function FunctionNode({ id, data }) {
             <Editor
               className='nodrag flex-grow dark:border-[#27272a] cursor-text'
               setCodeHook={setCode}
+              code={code}
             ></Editor>
           </CollapsibleContent>
         </Collapsible>

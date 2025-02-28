@@ -10,7 +10,6 @@ const Editor = ({ className, code, setCodeHook, readOnly = false }) => {
   const editorView = useRef(null)
 
   useEffect(() => {
-    console.log('code?', code)
     setCode(code)
   }, [code])
 
@@ -69,14 +68,14 @@ const Editor = ({ className, code, setCodeHook, readOnly = false }) => {
       parent: element.current,
     })
 
-    if (code === '' || code === undefined)
+    if (code === '' || code === undefined) {
       setCode(Array.from({ length: 1 }).join('\n'))
+    }
   }, [element])
 
   const setCode = code => {
     if (code === undefined) return
 
-    console.log('setCode', code, editorView.current)
     if (editorView.current) {
       editorView.current.dispatch({
         changes: {
@@ -85,7 +84,7 @@ const Editor = ({ className, code, setCodeHook, readOnly = false }) => {
           insert: code,
         },
       })
-    } else setTimeout(() => setCode(code), 100)
+    } else if (code !== '') setTimeout(() => setCode(code), 50)
   }
 
   const getCode = () => {
