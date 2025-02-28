@@ -1,0 +1,4 @@
+{
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "javascript.preferences.importModuleSpecifierPreference": "relative"
+}
